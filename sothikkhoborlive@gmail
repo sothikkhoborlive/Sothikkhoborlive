@@ -1,0 +1,197 @@
+## Hi there 👋
+
+<!--
+**sothikkhoborlive/Sothikkhoborlive** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+
+Here are some ideas to get you started:
+
+- 🔭 I’m currently working on ...
+- 🌱 I’m currently learning ...
+- 👯 I’m looking to collaborate on ...
+- 🤔 I’m looking for help with ...
+- 💬 Ask me about ...
+- 📫 How to reach me: ...
+- 😄 Pronouns: ...
+- ⚡ Fun fact: ...
+-->
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    color: #333;
+}
+
+/* Header Styling */
+header {
+    background-color: #ff3333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.headline {
+    font-size: 20px;
+    color: yellow;
+    background-color: #000;
+    padding: 5px 0;
+}
+
+/* Navigation Styling */
+nav ul {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    background-color: #333;
+    list-style: none;
+    margin: 0;
+}
+
+nav li {
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Main Content Styling */
+main {
+    padding: 20px;
+    text-align: center;
+}
+
+.news-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#newsForm {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+#newsForm input, #newsForm textarea {
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 16px;
+    width: 100%;
+    max-width: 600px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+#newsForm button {
+    padding: 10px;
+    background-color: #ff3333;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 5px;
+}
+
+#postedNews {
+    width: 100%;
+    max-width: 600px;
+    margin-top: 20px;
+}
+
+#postedNews div {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#postedNews img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Admin Panel Styling */
+#adminPanel {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#adminPanel input {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+#adminPanel button {
+    padding: 10px;
+    background-color: #ff3333;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 5px;
+}
+
+/* Footer Styling */
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background-color: #333;
+    color: white;
+}// Admin Panel password for login
+const adminPassword = "admin123";  // এই পাসওয়ার্ড ব্যবহার করে অ্যাডমিন লগইন করবে
+
+document.getElementById("adminLoginBtn").addEventListener("click", function() {
+    const password = document.getElementById("adminPassword").value;
+    if (password === adminPassword) {
+        alert("লগ ইন সফল হয়েছে!");
+        document.getElementById("adminPanel").innerHTML = `
+            <h3>Admin Panel</h3>
+            <button id="deleteNewsBtn">নিউজ মুছে ফেলুন</button>
+        `;
+        document.getElementById("deleteNewsBtn").addEventListener("click", deleteNews);
+    } else {
+        alert("পাসওয়ার্ড ভুল!");
+    }
+});
+
+// নিউজ পোস্ট ফর্ম সাবমিট করার ফাংশন
+document.getElementById("newsForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const headline = document.getElementById("headline").value;
+    const description = document.getElementById("description").value;
+    const image = document.getElementById("image").files[0];
+
+    if (!headline || !description || !image) {
+        alert("সব তথ্য পূর্ণ করুন!");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("headline", headline);
+    formData.append("description", description);
+    formData.append("image", image);
+
+    const imageURL = URL.createObjectURL(image);
+
+    const postedNewsDiv = document.getElementById("postedNews");
+
+    const newsItem = document.createElement("div");
+    newsItem.innerHTML = `
+        <h3>${headline}</h3>
+        <img src="${imageURL}" alt="নিউজ ছবি" style="width:100%; max-height:300px; object-fit:cover;">
+        <p>${description}</p>
+    `;
+    postedNewsDiv.appendChild(newsItem);
+
+    document.getElementById("newsForm").reset();
+});
+
+// নিউজ মুছে ফেলার ফাংশন
+function deleteNews() {
+    const postedNewsDiv = document.getElementById("postedNews");
+    postedNewsDiv.innerHTML = '';  // সমস্ত নিউজ মুছে ফেলবে
+}
